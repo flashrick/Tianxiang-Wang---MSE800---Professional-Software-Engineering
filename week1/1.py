@@ -1,21 +1,21 @@
 # Build a Multi-Type Profile
 
-# Name
+# Name string, for showing text
 name = "Tianxiang Wang"
 
-# Age
+# Age integer, number without decimals
 age = 35
 
-# Skills
+# Skills list, it's ordered, mutable and can be stored multiple values
 skills = ["Python", "MySQL"]
 
-# Education
+# Education tuple, it's ordered, immutable 
 education = ("BSc Computer Science", 2014)
 
-# Contact Details
+# Contact Details Dictionary, key-value pairs 
 contact_details = {"email": "xxxx1111@gmail.com", "phone": "02040111111"}
 
-# Certifications
+# Certifications it's unordered and it has unique elements. It can removes duplicates automatically
 certifications = {"Azure", "AWS", "Aliyun"}
 
 print("Name:", name)
