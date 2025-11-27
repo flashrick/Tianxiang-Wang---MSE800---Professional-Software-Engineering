@@ -41,7 +41,7 @@ def factorial(n):
 from functools import lru_cache
 
 def fibonacci_series_b(n):
-
+    # cache the function results for identical parameters
     @lru_cache(maxsize=None)
     def fib(m):
         # stopping conditions
@@ -67,5 +67,5 @@ if __name__ == "__main__":
     print(factorial(5))
 
     print("Part2:")
-    print(fibonacci_series_b(6))
+    print(fibonacci_series_b(1000))
     print(factorial_b)
