@@ -67,5 +67,5 @@ if __name__ == "__main__":
     print(factorial(5))
 
     print("Part2:")
-    print(fibonacci_series_b(1000))
+    print(fibonacci_series_b(6))
     print(factorial_b)
