@@ -58,14 +58,17 @@ def fibonacci_series_b(n):
 
 import math
 
-factorial_b = math.factorial(5)
+def factorial_b(n):
+    return math.factorial(n)
 
 
 if __name__ == "__main__":
+    x = int(input("Enter a number: "))
+
     print("Part1:")
-    print(fibonacci_series(6))
-    print(factorial(5))
+    print(f"fibonacci_series({x}) = {fibonacci_series(x)}")
+    print(f"factorial({x}) = {factorial(x)}")
 
     print("Part2:")
-    print(fibonacci_series_b(6))
-    print(factorial_b)
+    print(f"fibonacci_series_b({x}) = {fibonacci_series_b(x)}")
+    print(f"factorial_b({x}) = {factorial_b(x)}")
