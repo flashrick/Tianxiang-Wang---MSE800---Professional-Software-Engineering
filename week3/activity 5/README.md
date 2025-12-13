@@ -43,3 +43,6 @@ Email: 270430358@yoobeestudent.ac.nz
 3. Run `python3 main.py`.
 
 The script lists the senior patients and shows the number of Ophthalmology doctors. Update the table classes and remove `clinic.db` if you change the ER diagram so the schema is recreated on the next run.
+
+## Video of technical approach
+<video src="./video_1.mp4" controls width="600"></video>
