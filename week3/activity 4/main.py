@@ -1,59 +1,69 @@
 from pathlib import Path
 from database import Database
-from programs import Programs
 from courses import Courses
 from students import Students
 from lecturers import Lecturers
 from course_lectures import CourseLectures
 
 
+def needs_schema_reset(database: Database) -> bool:
+    """Return True when the existing DB still uses an outdated schema."""
+
+    cursor = database.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='courses'")
+    if cursor.fetchone() is None:
+        return False
+    cursor.execute("PRAGMA table_info(courses)")
+    columns = [row[1] for row in cursor.fetchall()]
+    return "program_id" in columns
+
+
 if __name__ == "__main__":
     db_file = Path("school.db")
-    # Check if the database already exists on disk
     db_exists = db_file.exists()
 
     db = Database(str(db_file))
-    programs = Programs(db)
+
+    if db_exists and needs_schema_reset(db):
+        # Delete the legacy database so the new ER structure can be applied
+        db.close()
+        db_file.unlink()
+        db_exists = False
+        db = Database(str(db_file))
+
     courses = Courses(db)
     students = Students(db)
     lecturers = Lecturers(db)
     course_lectures = CourseLectures(db)
 
     if not db_exists:
-        # First run: create all tables and insert the base data
-        programs.create_table()
+        # Create all tables and insert the base information shown in the ERD
         courses.create_table()
         students.create_table()
         lecturers.create_table()
         course_lectures.create_table()
         db.commit()
 
-        # Add the Master of Software Engineering program
-        mse_program_id = programs.add(
-            "Master of Software Engineering", 2025, "2025-11-17", "2026-11-15"
-        )
-
-        # Add the two software courses that belong to the program
+        # Insert the two MSE courses
         mse800_id = courses.add(
-            mse_program_id,
             "Professional Software Engineering",
             "2025-11-17",
             "2026-03-01",
             "MSE800",
         )
         mse801_id = courses.add(
-            mse_program_id, 
-            "Research Methods", 
-            "2025-11-17", 
-            "2026-03-01", 
-            "MSE801"
+            "Research Methods",
+            "2025-11-17",
+            "2026-03-01",
+            "MSE801",
         )
 
-        # Add a few students who are inside the program
-        students.add("Tom", "1999-07-14", "Female", mse_program_id)
-        students.add("Peter", "1998-05-02", "Male", mse_program_id)
+        # Add several students that are linked straight to MSE800
+        students.add("Tom", "1999-07-14", "Male", mse800_id)
+        students.add("Peter", "1998-05-02", "Male", mse800_id)
+        students.add("Maya", "2000-01-23", "Female", mse800_id)
 
-        # Add lecturers that teach the MSE801 course
+        # Assign lecturers to the MSE801 course
         nvidia_id = lecturers.add("Nvidia", "1983-10-04", "Female")
         amd_id = lecturers.add("AMD", "1988-06-21", "Male")
         course_lectures.add(mse801_id, nvidia_id)

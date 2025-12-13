@@ -9,24 +9,21 @@ class Courses:
         self.db = db
 
     def create_table(self) -> None:
-        # Create the courses table so each course belongs to a program
+        # Create the courses table with only the fields from the ERD
         self.db.cursor().execute(
             """
             CREATE TABLE IF NOT EXISTS courses (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                program_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
                 start_date TEXT NOT NULL,
                 end_date TEXT NOT NULL,
-                code TEXT NOT NULL UNIQUE,
-                FOREIGN KEY (program_id) REFERENCES programs(id)
+                code TEXT NOT NULL UNIQUE
             )
             """
         )
 
     def add(
         self,
-        program_id: int,
         name: str,
         start_date: str,
         end_date: str,
@@ -36,10 +33,10 @@ class Courses:
         cursor = self.db.cursor()
         cursor.execute(
             """
-            INSERT INTO courses(program_id, name, start_date, end_date, code)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO courses(name, start_date, end_date, code)
+            VALUES (?, ?, ?, ?)
             """,
-            (program_id, name, start_date, end_date, code),
+            (name, start_date, end_date, code),
         )
         self.db.commit()
         return cursor.lastrowid
