@@ -7,6 +7,29 @@ Activity 4 contains a small SQLite + Python project that illustrates how to read
   - Count students enrolled in course code `MSE800`.
   - List teachers who lecture course code `MSE801`.
 
+## Table schema
+- **courses**
+  - `id INTEGER PRIMARY KEY`
+  - `name TEXT NOT NULL`
+  - `start_date TEXT NOT NULL`
+  - `end_date TEXT NOT NULL`
+  - `code TEXT NOT NULL UNIQUE`
+- **students**
+  - `id INTEGER PRIMARY KEY`
+  - `name TEXT NOT NULL`
+  - `birth_date TEXT NOT NULL`
+  - `gender TEXT NOT NULL`
+  - `course_id INTEGER NOT NULL` referencing `courses(id)`
+- **lecturers**
+  - `id INTEGER PRIMARY KEY`
+  - `name TEXT NOT NULL`
+  - `birth_date TEXT NOT NULL`
+  - `gender TEXT NOT NULL`
+- **course_lectures**
+  - `course_id INTEGER NOT NULL` referencing `courses(id)`
+  - `lecturer_id INTEGER NOT NULL` referencing `lecturers(id)`
+  - Combined primary key `(course_id, lecturer_id)`
+
 ## Getting started
 1. Open a shell in `week3/activity 4`.
 2. (Optional) delete `school.db` if you need a fresh database.
